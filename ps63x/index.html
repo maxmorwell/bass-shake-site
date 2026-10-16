@@ -67,7 +67,7 @@
 
   <section id="s-feedback" class="feedback">
     <h2>Feedback</h2>
-    <p class="note">Test build — tell us how it went. Sends only when you tap Send, and only what's listed below: never your video or its sound.</p>
+    <p class="note"><span id="fbBuild">Alpha build</span> — tell us how it went. Sends only when you tap Send, and only what's listed below: never your video or its sound.</p>
     <div class="row seg-row"><label id="fbWorkedLbl">Did it work?</label><span class="hint"></span><span></span>
       <div class="seg" role="group" aria-labelledby="fbWorkedLbl" id="fbWorked"></div></div>
     <div class="row seg-row"><label id="fbLookLbl">How did the shake look?</label><span class="hint"></span><span></span>
@@ -85,9 +85,10 @@
 
 <script>
 // Classic script: runs even if the module below fails to load, so errors still reach the report.
-window.BUILD = "v2-0.25 · 2026-10-16 09:55";
+window.BUILD = "v2-0.26 · 2026-10-16 21:10";
 document.getElementById("build").textContent = "test build " + window.BUILD;
 document.getElementById("buildFoot").textContent = "build " + window.BUILD;
+document.getElementById("fbBuild").textContent = "Alpha build " + window.BUILD.split(" ")[0];
 window.__log = [];
 window.log = function (msg) {
   const line = "[" + (performance.now() / 1000).toFixed(2) + "s] " + msg;
