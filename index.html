@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Bass Shake: a free bass shake effect for your videos</title>
+<meta name="description" content="Add a bass shake effect to your videos automatically, driven by your clip's own bass. Fine-tune strength, wobble and blur. Free, in your browser.">
+<meta property="og:title" content="Bass Shake">
+<meta property="og:description" content="See the bass. Make your video move with the bass, right in your browser.">
+<meta property="og:url" content="https://bass-shake.app/">
+<link rel="canonical" href="https://bass-shake.app/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Bass Shake">
+<meta property="og:image" content="https://bass-shake.app/img/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Bass Shake. See the bass.">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48">
+<link rel="icon" type="image/png" sizes="192x192" href="/img/icon-192.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebApplication","name":"Bass Shake","url":"https://bass-shake.app/",
+"description":"Bass Shake makes your video move with the bass, as if the camera were sitting on the speaker. It reads your clip's own audio and runs in your browser; your clips never leave your device.",
+"applicationCategory":"MultimediaApplication","operatingSystem":"Any (runs in a web browser)",
+"browserRequirements":"A current web browser (phone or computer)",
+"sameAs":["https://www.instagram.com/bass_shake_app/","https://www.youtube.com/@bass_shake_app","https://bsky.app/profile/bass-shake.app","https://x.com/bass_shake_app"]}
+</script>
+<meta name="theme-color" content="#000000">
+<!-- Bass Shake landing page (built by tools/build_landing.py from the v4 design). Fonts: Archivo + IBM Plex Sans, SIL OFL 1.1 (vendor/fonts). Social icons: Font Awesome Free 6.5.2/6.7.2, CC BY 4.0 (fontawesome.com). -->
+<style>
+@font-face{font-family:"Archivo";src:url(vendor/fonts/archivo-latin-wdth-normal.woff2) format("woff2");font-weight:100 900;font-stretch:62% 125%;font-display:swap}
+@font-face{font-family:"IBM Plex Sans";src:url(vendor/fonts/ibm-plex-sans-latin-400-normal.woff2) format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"IBM Plex Sans";src:url(vendor/fonts/ibm-plex-sans-latin-500-normal.woff2) format("woff2");font-weight:500;font-display:swap}
+@font-face{font-family:"IBM Plex Sans";src:url(vendor/fonts/ibm-plex-sans-latin-600-normal.woff2) format("woff2");font-weight:600;font-display:swap}
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;overflow-x:clip}
+body{margin:0}
+img{max-width:100%}
+.ico{width:1.15em;height:1.15em;display:block}
+.soc ul{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:12px}
+.soc a{display:flex;align-items:center;justify-content:center;text-decoration:none;color:inherit}
+.soc-h{margin:0 0 10px}
+.ea label{display:block}
+.ea-row{display:flex;flex-wrap:wrap;gap:8px}
+.ea input{flex:1 1 14rem;min-width:0;font:inherit}
+.ea button{font:inherit;cursor:pointer}
+.ea-msg{min-height:1.4em;margin:8px 0 0}
+a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid var(--focus,currentColor);outline-offset:3px}
+.steps{margin:0;padding:0;list-style:none;counter-reset:s}
+.steps li{counter-increment:s;display:flex;gap:.7em;align-items:baseline}
+.steps li::before{content:counter(s);font-variant-numeric:tabular-nums}
+@media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}}
+
+:root{--bg:#000;--fg:#f4f2ec;--muted:#9c998f;--accent:#f2a33a;--ink:#1a1206;--focus:#f2a33a;color-scheme:dark}
+body{background:var(--bg);color:var(--fg);font:400 17px/1.55 "IBM Plex Sans",system-ui,sans-serif}
+.hero{padding-inline:16px;padding-block:9vh 0;overflow:hidden}
+.title{font:900 18.6vw/.8 "Archivo",sans-serif;font-stretch:125%;letter-spacing:-.02em;margin:0;will-change:transform,filter}
+.title span{display:block}
+.lower{display:grid;gap:28px}
+.wrap{max-width:38rem;margin:0 auto;padding-inline:20px;padding-block:var(--tagtop,28px) 48px;display:grid;gap:28px}
+.tag{font:700 1.6rem/1.1 "Archivo",sans-serif;font-stretch:112%;margin:0;color:var(--accent)}
+.lede{font-size:1.15rem;margin:0}
+.steps{display:grid;gap:4px;color:var(--muted)} .steps b{color:var(--fg);font-weight:500} .steps li::before{color:var(--accent)}
+.priv{color:var(--muted);margin:0} .priv b{color:var(--fg);font-weight:500}
+.soon{color:var(--accent);font-weight:600;margin:0 0 6px}
+.ea label{font-weight:600;margin-bottom:8px}
+.ea input{background:#141414;border:1px solid #333;color:var(--fg);padding:12px 14px;border-radius:4px}
+.ea button{background:var(--accent);color:var(--ink);border:0;padding:12px 18px;border-radius:4px;font-weight:600}
+.hp{position:absolute;left:-9999px;width:1px;height:1px;opacity:0}
+.ea-msg{color:var(--muted);font-size:.95rem;min-height:0} .ea-msg:empty{display:none}
+.soc-h{font-weight:600}
+.soc-circles a,.soc-circles .off{display:flex;align-items:center;justify-content:center;width:46px;height:46px;border-radius:50%;background:var(--accent);color:#000}
+.soc-circles .off{width:46px;height:46px;border-radius:50%;background:#3a3a3a;color:#000;cursor:default}
+.by{color:var(--muted);margin:0} .by a{color:var(--fg)}
+.wrap{--tagtop:34px}
+@media (min-width:900px){.title{font-size:min(19vw,14rem)} .wrap{--tagtop:27px}}
+
+.lower{position:relative;display:grid;gap:28px;padding-block:8px 24px}
+.lower::before{content:"";position:absolute;z-index:-1;pointer-events:none;top:-70px;bottom:-48px;left:calc(50% - 50vw);width:100vw;
+  background:url(img/landing-cone.jpg) center 62%/cover no-repeat;
+  -webkit-mask-image:linear-gradient(transparent,#000 35%);mask-image:linear-gradient(transparent,#000 35%)}
+.wrap{padding-bottom:48px;isolation:isolate}
+</style>
+</head>
+<body>
+<header class="hero"><h1 class="title" id="t" aria-label="Bass Shake"><span>BASS</span> <span>SHAKE</span></h1></header>
+<main class="wrap">
+  <p class="tag">See the bass.</p>
+  <p class="lede">Bass Shake makes your video move with the bass, as if the camera were sitting on the speaker.</p>
+  <ol class="steps">
+  <li><span><b>Load a clip</b> with bass in it.</span></li>
+  <li><span><b>Set the shake</b> to taste: strength, wobble, blur.</span></li>
+  <li><span><b>Save it</b>, ready for Reels, TikTok and Shorts.</span></li>
+</ol>
+  <p class="priv"><b>Free</b>, and it runs in your browser. Your clips never leave your phone or computer.</p>
+  <div class="lower">
+  <section><p class="soon">Coming soon</p><form class="ea" id="ea" novalidate>
+  <label for="ea-email">News and beta invites</label>
+  <div class="ea-row">
+    <input class="hp" name="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+    <input id="ea-email" name="email" type="email" autocomplete="email" placeholder="you@example.com" required>
+    <button type="submit">Join the list</button>
+  </div>
+  <p class="ea-msg" id="ea-msg" role="status"></p>
+</form></section>
+  <nav class="soc soc-circles" aria-label="Bass Shake on social media"><p class="soc-h">Follow @bass_shake_app</p><ul><li><a href="https://www.instagram.com/bass_shake_app/" target="_blank" rel="noopener" aria-label="Bass Shake on Instagram"><svg class="ico" viewBox="0 0 448 512" aria-hidden="true" focusable="false"><path fill="currentColor" d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9c-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM398.8 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z"/></svg></a></li><li><a href="https://www.tiktok.com/@bass_shake_app" target="_blank" rel="noopener" aria-label="Bass Shake on TikTok"><svg class="ico" viewBox="0 0 448 512" aria-hidden="true" focusable="false"><path fill="currentColor" d="M448,209.91a210.06,210.06,0,0,1-122.77-39.25V349.38A162.55,162.55,0,1,1,185,188.31V278.2a74.62,74.62,0,1,0,52.23,71.18V0l88,0a121.18,121.18,0,0,0,1.86,22.17h0A122.18,122.18,0,0,0,381,102.39a121.43,121.43,0,0,0,67,20.14Z"/></svg></a></li><li><a href="https://www.youtube.com/@bass_shake_app" target="_blank" rel="noopener" aria-label="Bass Shake on YouTube"><svg class="ico" viewBox="0 0 576 512" aria-hidden="true" focusable="false"><path fill="currentColor" d="M549.655 124.083c-6.281-23.65-24.787-42.276-48.284-48.597C458.781 64 288 64 288 64S117.22 64 74.629 75.486c-23.497 6.322-42.003 24.947-48.284 48.597-11.412 42.867-11.412 132.305-11.412 132.305s0 89.438 11.412 132.305c6.281 23.65 24.787 41.5 48.284 47.821C117.22 448 288 448 288 448s170.78 0 213.371-11.486c23.497-6.321 42.003-24.171 48.284-47.821 11.412-42.867 11.412-132.305 11.412-132.305s0-89.438-11.412-132.305zm-317.51 213.508V175.185l142.739 81.205-142.739 81.201z"/></svg></a></li><li><a href="https://bsky.app/profile/bass-shake.app" target="_blank" rel="noopener" aria-label="Bass Shake on Bluesky"><svg class="ico" viewBox="0 0 512 512" aria-hidden="true" focusable="false"><path fill="currentColor" d="M111.8 62.2C170.2 105.9 233 194.7 256 242.4c23-47.6 85.8-136.4 144.2-180.2c42.1-31.6 110.3-56 110.3 21.8c0 15.5-8.9 130.5-14.1 149.2C478.2 298 412 314.6 353.1 304.5c102.9 17.5 129.1 75.5 72.5 133.5c-107.4 110.2-154.3-27.6-166.3-62.9l0 0c-1.7-4.9-2.6-7.8-3.3-7.8s-1.6 3-3.3 7.8l0 0c-12 35.3-59 173.1-166.3 62.9c-56.5-58-30.4-116 72.5-133.5C100 314.6 33.8 298 15.7 233.1C10.4 214.4 1.5 99.4 1.5 83.9c0-77.8 68.2-53.4 110.3-21.8z"/></svg></a></li><li><a href="https://x.com/bass_shake_app" target="_blank" rel="noopener" aria-label="Bass Shake on X"><svg class="ico" viewBox="0 0 512 512" aria-hidden="true" focusable="false"><path fill="currentColor" d="M389.2 48h70.6L305.6 224.2 487 464H345L233.7 318.6 106.5 464H35.8L200.7 275.5 26.8 48H172.4L272.9 180.9 389.2 48zM364.4 421.8h39.1L151.1 88h-42L364.4 421.8z"/></svg></a></li></ul></nav>
+  <p class="by">Made by <a href="https://www.instagram.com/maxmorwell/" target="_blank" rel="noopener">@maxmorwell</a></p>
+  </div>
+</main>
+<script>
+(function(){
+  var ENDPOINT = 'https://script.google.com/macros/s/AKfycbz9lm0zYITEUqUI5MAH6DWXypDYCtlLgo2k3nBstz0etrlbkIC3HGl56zJdPZBqRAxW/exec';
+  var f=document.getElementById('ea'); if(!f) return;
+  var i=document.getElementById('ea-email'), m=document.getElementById('ea-msg'), b=f.querySelector('button[type=submit]');
+  var q=new URLSearchParams(location.search), src=(q.get('src')||'landing').slice(0,40);
+  f.addEventListener('submit',function(e){
+    e.preventDefault();
+    if(!i.value || !i.checkValidity()){ m.textContent='Enter an email address, like you@example.com.'; i.focus(); return; }
+    var tz=''; try{ tz=Intl.DateTimeFormat().resolvedOptions().timeZone||''; }catch(_){}
+    var body=new URLSearchParams({email:i.value.trim(), src:src, tz:tz, lang:navigator.language||'', hp:f.hp.value});
+    b.disabled=true; m.textContent='Sending\u2026';
+    fetch(ENDPOINT,{method:'POST', body:body}).then(function(r){ return r.json(); }).then(function(d){
+      if(d && d.ok){ m.textContent = d.dup ? 'You\u2019re already on the list.' : 'Thanks, you\u2019re on the list.'; f.reset(); }
+      else { m.textContent = 'That address didn\u2019t look right. Please check it and try again.'; }
+    }).catch(function(){ m.textContent='Something went wrong. Please try again in a moment.'; })
+      .then(function(){ b.disabled=false; });
+  });
+})();
+var BS = (function(){
+  var beat=60/140, bar=4*beat, tau=0.16, f=15;
+  var hits=[[0,1.0],[2.5*beat,0.55]];
+  function at(t){
+    var ph=t%bar, e=0;
+    for(var i=0;i<hits.length;i++){ var d=ph-hits[i][0]; if(d<0) d+=bar; e=Math.max(e,hits[i][1]*Math.exp(-d/tau)); }
+    var w=2*Math.PI*f*t;
+    return {e:e, x:e*Math.sin(w), y:e*Math.cos(w*0.83+1.1)};
+  }
+  var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  return {at:at, reduce:reduce};
+})();
+(function(){
+  var t=document.getElementById('t'); if(BS.reduce) return; var t0=performance.now();
+  function f(now){ var s=BS.at((now-t0)/1000), a=Math.min(window.innerWidth,1200)*0.0084;   // 70 % of v1
+    t.style.transform='translate('+(s.x*a).toFixed(2)+'px,'+(s.y*a*0.8).toFixed(2)+'px)';
+    t.style.filter=s.e>0.3?'blur('+((s.e-0.3)*1.2).toFixed(2)+'px)':'none';
+    requestAnimationFrame(f);}
+  requestAnimationFrame(f);
+})();</script>
+</body>
+</html>

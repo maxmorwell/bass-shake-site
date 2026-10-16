@@ -1,0 +1,5 @@
+# Bass Shake: all crawlers welcome, including search and AI-assistant crawlers.
+User-agent: *
+Allow: /
+
+Sitemap: https://bass-shake.app/sitemap.xml
