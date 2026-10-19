@@ -5,7 +5,7 @@
 <meta name="theme-color" content="#0b0a0d">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@112..125,500;112..125,800&family=IBM+Plex+Sans:wght@400;500&family=IBM+Plex+Mono:wght@400;500&display=swap">
-<link rel="stylesheet" href="../css/app.css?v=70d8eaba75">
+<link rel="stylesheet" href="../css/app.css?v=549b97866c">
 </head><body>
 <div class="bg" aria-hidden="true"></div>
 <div class="scrim" aria-hidden="true"></div>
@@ -45,9 +45,10 @@
   <section id="s-preview">
     <h2><span class="n">3</span>Preview</h2>
     <div class="ctl" id="prevCtls"></div>
-    <div class="actions"><button class="btn primary" id="previewBtn" type="button" disabled>Render preview</button></div>
+    <div class="actions"><button class="btn primary" id="previewBtn" type="button" disabled>Render preview</button><button class="btn quiet" id="previewCancelBtn" type="button" hidden>Cancel</button></div>
     <progress id="previewProg" value="0" max="1" hidden></progress>
     <div class="status" id="previewStatus" role="status"></div>
+    <div class="status" id="previewStale" role="status"></div>
     <video id="previewVid" controls playsinline hidden></video>
   </section>
 
@@ -59,6 +60,7 @@
     <div class="actions"><button class="btn" id="exportBtn" type="button" disabled>Render full video</button><button class="btn quiet" id="cancelBtn" type="button" hidden>Cancel</button></div>
     <progress id="exportProg" value="0" max="1" hidden></progress>
     <div class="status" id="exportStatus" role="status"></div>
+    <div class="status" id="exportStale" role="status"></div>
     <div class="actions"><button class="btn primary" id="shareBtn" type="button" hidden>Save to Photos / Share</button><button class="btn" id="downloadBtn" type="button" hidden>Download</button></div>
     <p class="note tagline" id="saveHint" hidden>Tap “Save Video” to add it to Photos.</p>
     <div class="status" id="saveStatus" role="status"></div>
@@ -85,7 +87,7 @@
 
 <script>
 // Classic script: runs even if the module below fails to load, so errors still reach the report.
-window.BUILD = "v2-0.38 · 2026-10-18 21:50";
+window.BUILD = "v2-0.39 · 2026-10-19 12:50";
 document.getElementById("build").textContent = "test build " + window.BUILD;
 document.getElementById("buildFoot").textContent = "build " + window.BUILD;
 document.getElementById("fbBuild").textContent = "Alpha build " + window.BUILD.split(" ")[0];
@@ -105,5 +107,5 @@ window.addEventListener("error", e => log("ERROR " + (e.message || e)));
 window.addEventListener("unhandledrejection", e => log("REJECTION " + (e.reason && (e.reason.stack || e.reason.message) || e.reason)));
 try { if (sessionStorage.getItem("bs_export_running")) { sessionStorage.removeItem("bs_export_running"); window.__lastExportInterrupted = true; log("previous export did not finish (page closed or reloaded mid-export)"); } } catch {}
 </script>
-<script type="module" src="../js/app.js?v=70d8eaba75"></script>
+<script type="module" src="../js/app.js?v=549b97866c"></script>
 </body></html>
