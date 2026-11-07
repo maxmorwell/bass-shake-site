@@ -73,6 +73,11 @@ body{background:var(--bg);color:var(--fg);font:400 17px/1.55 "IBM Plex Sans",sys
 .soc-circles a,.soc-circles .off{display:flex;align-items:center;justify-content:center;width:46px;height:46px;border-radius:50%;background:var(--accent);color:#000}
 .soc-circles .off{width:46px;height:46px;border-radius:50%;background:#3a3a3a;color:#000;cursor:default}
 .legal{margin-top:6px;font-size:12px}
+.demo{margin:0;justify-self:center;width:min(100%,300px)}
+.demo-box{position:relative}
+.demo video{display:block;width:100%;aspect-ratio:9/16;border-radius:10px;background:#111;object-fit:cover}
+.demo-snd{position:absolute;left:10px;bottom:10px;border:0;border-radius:999px;padding:8px 14px;font:600 14px "IBM Plex Sans",sans-serif;background:rgba(0,0,0,.65);color:#fff;cursor:pointer}
+.demo-snd[aria-pressed=true]{background:var(--accent);color:#1a1206}
 .by{color:var(--muted);margin:0} .by a{color:var(--fg)}
 .wrap{--tagtop:34px}
 @media (min-width:900px){.title{font-size:min(19vw,14rem)} .wrap{--tagtop:27px}}
@@ -90,6 +95,10 @@ body{background:var(--bg);color:var(--fg);font:400 17px/1.55 "IBM Plex Sans",sys
 <main class="wrap">
   <p class="tag">See the bass.</p>
   <p class="lede">Bass Shake makes your video move with the bass, as if the camera were sitting on the speaker.</p>
+  <figure class="demo">
+    <div class="demo-box"><video id="demo" src="img/demo.mp4" poster="img/demo-poster.jpg" muted loop playsinline preload="metadata" aria-label="Example: a clip with Bass Shake applied"></video>
+    <button class="demo-snd" id="demoSnd" type="button" aria-pressed="false">Tap for sound</button></div>
+  </figure>
   <ol class="steps">
   <li><span><b>Load a clip</b> with bass in it.</span></li>
   <li><span><b>Set the shake</b> to taste: strength, wobble, blur.</span></li>
@@ -155,6 +164,20 @@ var BS = (function(){
   function on(sel, fn){ document.querySelectorAll(sel).forEach(function(el){ el.addEventListener('click', fn); }); }
   on('.soc-circles a', function(){ if(window.bsCount) bsCount('social_click', {platform: (this.getAttribute('aria-label')||'').replace('Bass Shake on ','')}); });
   on('.by a[href*="maxmorwell"]', function(){ if(window.bsCount) bsCount('made_by_click'); });
+})();
+</script>
+<script>
+(function(){
+  var v=document.getElementById('demo'), b=document.getElementById('demoSnd'); if(!v||!b) return;
+  var calm=window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(!calm){ var p=v.play(); if(p&&p.catch) p.catch(function(){}); }
+  b.addEventListener('click', function(){
+    var on = v.muted;                      // turning sound on
+    v.muted = !on;
+    if(on){ v.currentTime = 0; var p=v.play(); if(p&&p.catch) p.catch(function(){}); }
+    b.setAttribute('aria-pressed', on ? 'true' : 'false');
+    b.textContent = on ? 'Sound on' : 'Tap for sound';
+  });
 })();
 </script>
 </body>
